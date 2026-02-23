@@ -1,5 +1,5 @@
 //
-//  SessionRow.swift
+//  HistorySessionRow.swift
 //  Pushly
 //
 //  Created by Никита Сторчай on 23.02.2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SessionRow: View {
+struct HistorySessionRow: View {
     let session: WorkoutSession
 
     private var performanceLevel: Double {

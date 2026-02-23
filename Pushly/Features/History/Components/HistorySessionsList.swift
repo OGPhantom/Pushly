@@ -49,7 +49,7 @@ private extension HistorySessionsList {
             Button {
                 selectedSession = session
             } label: {
-                SessionRow(session: session)
+                HistorySessionRow(session: session)
             }
             .buttonStyle(.plain)
         }
