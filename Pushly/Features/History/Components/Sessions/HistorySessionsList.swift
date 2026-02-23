@@ -34,7 +34,7 @@ private extension HistorySessionsList {
     private var emptyState: some View {
         VStack(spacing: 12) {
             Image(systemName: "figure.strengthtraining.traditional")
-                .font(.largeTitle)
+                .font(.system(size: 64))
                 .foregroundStyle(.secondary)
             Text("No sessions yet")
                 .font(.subheadline)

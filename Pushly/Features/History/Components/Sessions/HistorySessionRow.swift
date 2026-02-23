@@ -40,7 +40,7 @@ struct HistorySessionRow: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 6) {
-                Text(formatDuration(session.duration))
+                Text(session.formattedDuration)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -50,12 +50,6 @@ struct HistorySessionRow: View {
         .background(
             Color.clear
         )
-    }
-
-    private func formatDuration(_ duration: TimeInterval) -> String {
-        let minutes = Int(duration) / 60
-        let seconds = Int(duration) % 60
-        return String(format: "%d:%02d", minutes, seconds)
     }
 
     private func formatSessionRelativeDate(_ date: Date) -> String {

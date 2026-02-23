@@ -1,5 +1,5 @@
 //
-//  StatCard.swift
+//  HomeStatCard.swift
 //  Pushly
 //
 //  Created by Никита Сторчай on 23.02.2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StatCard: View {
+struct HomeStatCard: View {
     let title: String
     let value: String
     let icon: String
@@ -34,5 +34,5 @@ struct StatCard: View {
 }
 
 #Preview {
-    StatCard(title: "This Week", value: "10", icon: "flame.fill", color: .orange)
+    HomeStatCard(title: "This Week", value: "10", icon: "flame.fill", color: .orange)
 }

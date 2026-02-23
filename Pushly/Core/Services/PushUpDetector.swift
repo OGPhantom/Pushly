@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 nonisolated enum PushUpPhase: Sendable {
     case idle
@@ -35,6 +36,14 @@ nonisolated enum FormQuality: Sendable {
         case .good: return "Good Form"
         case .warning: return "Watch Form"
         case .bad: return "Fix Form"
+        }
+    }
+
+    var formColor: Color {
+        switch self {
+        case .good: return .green
+        case .warning: return .orange
+        case .bad: return .red
         }
     }
 }
