@@ -32,7 +32,7 @@ struct HomeStartButton: View {
             .frame(height: 60)
             .background(
                 LinearGradient(
-                    colors: [Color("AccentColor"), Color("AccentColor").opacity(0.82)],
+                    colors: [.accent, .accent.opacity(0.82)],
                     startPoint: .leading,
                     endPoint: .trailing
                 ),

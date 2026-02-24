@@ -25,7 +25,7 @@ struct WorkoutFinishButton: View {
             .frame(height: 56)
             .background(
                 LinearGradient(
-                    colors: [Color("AccentColor"), Color("AccentColor").opacity(0.8)],
+                    colors: [.accent, .accent.opacity(0.8)],
                     startPoint: .leading,
                     endPoint: .trailing
                 ),

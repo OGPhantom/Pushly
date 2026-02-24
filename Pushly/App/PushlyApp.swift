@@ -17,7 +17,7 @@ struct PushlyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .tint(Color("AccentColor"))
+                .tint(.accent)
         }
         .modelContainer(for: WorkoutSession.self) 
     }

@@ -8,34 +8,60 @@
 import SwiftUI
 
 struct BreathingGlowView: View {
-    var body: some View {
-        let baseOpacity: Double = 0.55
-        let blurMultiplier: CGFloat = 1.0
 
+    // MARK: - Animation Constants
+    private enum Animation {
+        static let frequency: Double = 2.2
+        static let baseOpacity: Double = 0.65
+        static let opacityAmplitude: Double = 0.35
+        static let blurAmplitude: CGFloat = 0.4
+        static let baseBlurScale: CGFloat = 1.0
+    }
+
+    // MARK: - Circle Layers
+    private enum Layer {
+        static let smallSize: CGFloat = 180
+        static let mediumSize: CGFloat = 240
+        static let largeSize: CGFloat = 320
+
+        static let smallBlur: CGFloat = 30
+        static let mediumBlur: CGFloat = 60
+        static let largeBlur: CGFloat = 90
+
+        static let smallScaleAmplitude: CGFloat = 0.08
+        static let mediumScaleAmplitude: CGFloat = 0.10
+        static let largeScaleAmplitude: CGFloat = 0.14
+
+        static let baseOpacity: Double = 0.55
+        static let mediumOpacityMultiplier: Double = 0.6
+        static let largeOpacityMultiplier: Double = 0.3
+    }
+
+    var body: some View {
         return TimelineView(.animation) { timeline in
             let time = timeline.date.timeIntervalSinceReferenceDate
-            let phase = (sin(time * 2.2) + 1) / 2
-            let opacity = 0.65 + phase * 0.35
-            let dynamicBlur = 1 + phase * 0.4
+            let phase = (sin(time * Animation.frequency) + 1) / 2
+            let opacity = Animation.baseOpacity + phase * Animation.opacityAmplitude
+            let dynamicBlur = Animation.baseBlurScale + phase * Animation.blurAmplitude
 
             ZStack {
                 Circle()
-                    .fill(Color("AccentColor").opacity(baseOpacity))
-                    .frame(width: 180, height: 180)
-                    .blur(radius: 30 * blurMultiplier * dynamicBlur)
-                    .scaleEffect(1 + phase * 0.08)
+                    .fill(.accent.opacity(Layer.baseOpacity))
+                    .frame(width: Layer.smallSize, height: Layer.smallSize)
+                    .blur(radius: Layer.smallBlur * dynamicBlur)
+                    .scaleEffect(1 + phase * Layer.smallScaleAmplitude)
 
                 Circle()
-                    .fill(Color("AccentColor").opacity(baseOpacity * 0.6))
-                    .frame(width: 240, height: 240)
-                    .blur(radius: 60 * blurMultiplier * dynamicBlur)
-                    .scaleEffect(1 + phase * 0.10)
+                    .fill(.accent.opacity(Layer.baseOpacity * Layer.mediumOpacityMultiplier))
+                    .frame(width: Layer.mediumSize, height: Layer.mediumSize)
+                    .blur(radius: Layer.mediumBlur * dynamicBlur)
+                    .scaleEffect(1 + phase * Layer.mediumScaleAmplitude)
 
                 Circle()
-                    .fill(Color("AccentColor").opacity(baseOpacity * 0.3))
-                    .frame(width: 320, height: 320)
-                    .blur(radius: 90 * blurMultiplier * dynamicBlur)
-                    .scaleEffect(1 + phase * 0.14)
+                    .fill(.accent.opacity(Layer.baseOpacity * Layer.largeOpacityMultiplier))
+                    .frame(width: Layer.largeSize, height: Layer.largeSize)
+                    .blur(radius: Layer.largeBlur * dynamicBlur)
+                    .scaleEffect(1 + phase * Layer.largeScaleAmplitude)
             }
             .opacity(opacity)
             .blendMode(.plusLighter)

@@ -17,7 +17,7 @@ struct HistorySessionRow: View {
     var body: some View {
         HStack(spacing: 16) {
             Rectangle()
-                .fill(Color("AccentColor").opacity(0.8))
+                .fill(.accent.opacity(0.8))
                 .frame(width: 3)
                 .cornerRadius(2)
 
