@@ -10,28 +10,12 @@ import SwiftData
 
 @main
 struct PushlyApp: App {
-    init() {
-        ensureApplicationSupportDirectoryExists()
-    }
-
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .tint(.accent)
+                .preferredColorScheme(.dark)
         }
-        .modelContainer(for: WorkoutSession.self) 
-    }
-
-    private func ensureApplicationSupportDirectoryExists() {
-        do {
-            _ = try FileManager.default.url(
-                for: .applicationSupportDirectory,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: true
-            )
-        } catch {
-            assertionFailure("Failed to create Application Support directory: \(error)")
-        }
+        .modelContainer(for: WorkoutSession.self)
     }
 }

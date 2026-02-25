@@ -9,12 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedTab: AppTab = .home
-
-    private enum AppTab: Hashable {
-        case home
-        case history
-    }
-
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             HomeView {
@@ -32,6 +27,13 @@ struct ContentView: View {
                 .tag(AppTab.history)
         }
         .tint(Color.primary)
+    }
+}
+
+private extension ContentView {
+    private enum AppTab: Hashable {
+        case home
+        case history
     }
 }
 

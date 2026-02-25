@@ -8,35 +8,6 @@
 import SwiftUI
 
 struct BreathingGlowView: View {
-
-    // MARK: - Animation Constants
-    private enum Animation {
-        static let frequency: Double = 2.2
-        static let baseOpacity: Double = 0.65
-        static let opacityAmplitude: Double = 0.35
-        static let blurAmplitude: CGFloat = 0.4
-        static let baseBlurScale: CGFloat = 1.0
-    }
-
-    // MARK: - Circle Layers
-    private enum Layer {
-        static let smallSize: CGFloat = 180
-        static let mediumSize: CGFloat = 240
-        static let largeSize: CGFloat = 320
-
-        static let smallBlur: CGFloat = 30
-        static let mediumBlur: CGFloat = 60
-        static let largeBlur: CGFloat = 90
-
-        static let smallScaleAmplitude: CGFloat = 0.08
-        static let mediumScaleAmplitude: CGFloat = 0.10
-        static let largeScaleAmplitude: CGFloat = 0.14
-
-        static let baseOpacity: Double = 0.55
-        static let mediumOpacityMultiplier: Double = 0.6
-        static let largeOpacityMultiplier: Double = 0.3
-    }
-
     var body: some View {
         return TimelineView(.animation) { timeline in
             let time = timeline.date.timeIntervalSinceReferenceDate
@@ -66,6 +37,34 @@ struct BreathingGlowView: View {
             .opacity(opacity)
             .blendMode(.plusLighter)
         }
+    }
+}
+
+private extension BreathingGlowView {
+    private enum Animation {
+        static let frequency: Double = 2.2
+        static let baseOpacity: Double = 0.65
+        static let opacityAmplitude: Double = 0.35
+        static let blurAmplitude: CGFloat = 0.4
+        static let baseBlurScale: CGFloat = 1.0
+    }
+
+    private enum Layer {
+        static let smallSize: CGFloat = 180
+        static let mediumSize: CGFloat = 240
+        static let largeSize: CGFloat = 320
+
+        static let smallBlur: CGFloat = 30
+        static let mediumBlur: CGFloat = 60
+        static let largeBlur: CGFloat = 90
+
+        static let smallScaleAmplitude: CGFloat = 0.08
+        static let mediumScaleAmplitude: CGFloat = 0.10
+        static let largeScaleAmplitude: CGFloat = 0.14
+
+        static let baseOpacity: Double = 0.55
+        static let mediumOpacityMultiplier: Double = 0.6
+        static let largeOpacityMultiplier: Double = 0.3
     }
 }
 
