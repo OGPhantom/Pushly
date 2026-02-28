@@ -14,9 +14,9 @@ struct HomeStatsRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            HomeStatCard(title: "This Week", value: "\(thisWeekReps)", icon: "flame.fill", color: .orange)
-            HomeStatCard(title: "Sessions", value: "\(sessionsCount)", icon: "figure.strengthtraining.traditional", color: .blue)
-            HomeStatCard(title: "Streak", value: "\(streak)d", icon: "bolt.fill", color: .yellow)
+            StatCard(title: "This Week", value: "\(thisWeekReps)", icon: "flame.fill", color: .orange)
+            StatCard(title: "Sessions", value: "\(sessionsCount)", icon: "figure.strengthtraining.traditional", color: .blue)
+            StatCard(title: "Streak", value: "\(streak)d", icon: "bolt.fill", color: .yellow)
         }
     }
 }

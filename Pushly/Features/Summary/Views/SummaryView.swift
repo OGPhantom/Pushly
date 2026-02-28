@@ -25,7 +25,7 @@ struct SummaryView: View {
                 .padding(.top, 40)
                 .padding(.bottom, 24)
             }
-
+            
             SummaryDismissButton(onDismissTapped: onDismiss)
                 .padding(.horizontal)
                 .padding(.bottom, 16)

@@ -18,13 +18,9 @@ struct HistorySessionsList: View {
                 .font(.headline)
 
             if sessions.isEmpty {
-
                 emptyState
-
             } else {
-
                 listOfSessions
-
             }
         }
     }

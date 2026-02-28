@@ -12,9 +12,9 @@ struct HomeStartButton: View {
     let onTap: () -> Void
 
     var body: some View {
-        Button {
+        PrimaryGradientButton(height: 60, width: .infinity) {
             onTap()
-        } label: {
+        } content: {
             HStack(spacing: 12) {
                 if isLoading {
                     ProgressView()
@@ -27,24 +27,14 @@ struct HomeStartButton: View {
                 Text(isLoading ? "Requesting Camera..." : "Start Workout")
                     .font(.title3.bold())
             }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 60)
-            .background(
-                LinearGradient(
-                    colors: [.accent, .accent.opacity(0.82)],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                ),
-                in: .rect(cornerRadius: 16)
-            )
         }
         .disabled(isLoading)
+
     }
 }
 
 #Preview {
-    HomeStartButton(isLoading: true) {
+    HomeStartButton(isLoading: false) {
         //
     }
 }
