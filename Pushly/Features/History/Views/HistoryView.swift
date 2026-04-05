@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import Charts
 
 struct HistoryView: View {
     @Environment(\.modelContext) private var modelContext
@@ -18,39 +17,125 @@ struct HistoryView: View {
 
     var body: some View {
         let filtered = viewModel.filteredSessions(from: sessions)
-        let totalReps = viewModel.totalReps(from: sessions)
-        let avgForm = viewModel.averageForm(from: sessions)
 
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 20) {
-                    HistoryPeriodPicker(selectedPeriod: $viewModel.selectedPeriod)
+            ZStack {
+                backgroundLayer
 
-                    HistorySummaryRow(totalReps: totalReps, sessionsCount: filtered.count, avgFormScore: avgForm)
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 22) {
+                        heroSection
 
-                    HistorySessionsList(sessionsSectionTitle: viewModel.sessionsSectionTitle, sessions: filtered, selectedSession: $selectedSession)
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 32)
-            }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("History")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        viewModel.generateMockSessions(in: modelContext)
-                    } label: {
-                        Label("Mock Sessions", systemImage: "sparkles")
+                        HistoryPeriodPicker(selectedPeriod: $viewModel.selectedPeriod)
+
+                        HistorySummaryRow(sessions: filtered, periodTitle: viewModel.sessionsSectionTitle)
+
+                        HistorySessionsList(
+                            sessionsSectionTitle: viewModel.sessionsSectionTitle,
+                            sessions: filtered,
+                            selectedSession: $selectedSession
+                        )
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 12)
+                    .padding(.bottom, 120)
                 }
+                .scrollIndicators(.hidden)
             }
+            .navigationTitle("History")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbar { toolbar }
             .sheet(item: $selectedSession) { session in
                 SummaryView(session: session) {
                     selectedSession = nil
                 }
             }
         }
+    }
+}
+
+private extension HistoryView {
+    var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                viewModel.generateMockSessions(in: modelContext)
+            } label: {
+                Image(systemName: "sparkles.rectangle.stack.fill")
+                    .font(.headline)
+            }
+        }
+    }
+
+    var backgroundLayer: some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.06, green: 0.07, blue: 0.12),
+                    Color(red: 0.08, green: 0.05, blue: 0.09),
+                    Color.black
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+
+            Circle()
+                .fill(Color.accent.opacity(0.22))
+                .frame(width: 260, height: 260)
+                .blur(radius: 40)
+                .offset(x: 120, y: -210)
+
+            Circle()
+                .fill(Color.orange.opacity(0.16))
+                .frame(width: 220, height: 220)
+                .blur(radius: 50)
+                .offset(x: -150, y: -120)
+        }
+    }
+
+    var heroSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("TRAINING ARCHIVE")
+                .font(.caption.weight(.bold))
+                .tracking(2.4)
+                .foregroundStyle(.white.opacity(0.58))
+
+            Text("Sessions with more signal.")
+                .font(.system(size: 34, weight: .black, design: .rounded))
+                .foregroundStyle(.white)
+
+            Text("Scan your volume, spot cleaner form, and jump into any workout recap from one place.")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.72))
+
+            HStack(spacing: 10) {
+                heroBadge(title: "All Sessions", value: "\(sessions.count)")
+                heroBadge(
+                    title: "Last Logged",
+                    value: sessions.first?.date.formatted(.dateTime.day().month(.abbreviated)) ?? "Empty"
+                )
+            }
+        }
+    }
+
+    func heroBadge(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.white.opacity(0.52))
+
+            Text(value)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(.white.opacity(0.08), in: Capsule())
+        .overlay(
+            Capsule()
+                .stroke(.white.opacity(0.08), lineWidth: 1)
+        )
     }
 }
 

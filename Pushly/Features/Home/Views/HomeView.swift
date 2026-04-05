@@ -12,34 +12,71 @@ import UIKit
 
 struct HomeView: View {
     @Environment(\.openURL) private var openURL
+    @AppStorage(DailyGoalStorage.key) private var dailyGoal = DailyGoalStorage.defaultReps
 
     @Query(sort: \WorkoutSession.date, order: .reverse) private var sessions: [WorkoutSession]
     var onOpenHistoryTab: (() -> Void)? = nil
 
     @State private var selectedSession: WorkoutSession?
     @State private var viewModel = HomeViewModel()
+    @State private var showDailyGoalSettings = false
 
     var body: some View {
+        let todayReps = viewModel.todayReps(from: sessions)
+        let weekReps = viewModel.thisWeekReps(from: sessions)
+        let streak = viewModel.streak(from: sessions)
+        let totalReps = viewModel.totalReps(from: sessions)
+        let dailyGoalSnapshot = DailyGoalCalculator.snapshot(goal: dailyGoal, sessions: sessions)
+
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    HomeHeroView(todayReps: viewModel.todayReps(from: sessions))
+            ZStack {
+                backgroundLayer
 
-                    HomeStatsRow(thisWeekReps: viewModel.thisWeekReps(from: sessions), sessionsCount: sessions.count, streak: viewModel.streak(from: sessions))
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        DailyGoalProgressCard(snapshot: dailyGoalSnapshot) {
+                            showDailyGoalSettings = true
+                        }
 
-                    HomeStartButton(isLoading: viewModel.isRequestingCameraPermission) {
-                        viewModel.requestCameraAccessAndStartWorkout()
+                        HomeHeroView(todayReps: todayReps, totalReps: totalReps, streak: streak)
+
+                        HomeStatsRow(
+                            thisWeekReps: weekReps,
+                            sessionsCount: sessions.count,
+                            streak: streak
+                        )
+
+                        HomeStartButton(
+                            isLoading: viewModel.isRequestingCameraPermission) {
+                            viewModel.requestCameraAccessAndStartWorkout()
+                        }
+                        .sensoryFeedback(.impact(weight: .medium), trigger: viewModel.showWorkout)
                     }
-                    .sensoryFeedback(.impact(weight: .medium), trigger: viewModel.showWorkout)
-
+                    .padding(.horizontal, 20)
+                    .padding(.top, 12)
+                    .padding(.bottom, 120)
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 32)
+                .scrollIndicators(.hidden)
             }
-            .background(Color(.systemGroupedBackground))
             .navigationTitle("Pushly")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showDailyGoalSettings = true
+                    } label: {
+                        Image(systemName: "target")
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                    }
+                }
+            }
             .fullScreenCover(isPresented: $viewModel.showWorkout) {
                 WorkoutView()
+            }
+            .sheet(isPresented: $showDailyGoalSettings) {
+                DailyGoalSettingsView(todayReps: dailyGoalSnapshot.completedReps)
             }
             .sheet(item: $selectedSession) { session in
                 SummaryView(session: session) {
@@ -60,6 +97,36 @@ struct HomeView: View {
         }
     }
 }
+
+private extension HomeView {
+    var backgroundLayer: some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.05, green: 0.06, blue: 0.11),
+                    Color(red: 0.08, green: 0.04, blue: 0.09),
+                    Color.black
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+
+            Circle()
+                .fill(Color.accent.opacity(0.24))
+                .frame(width: 280, height: 280)
+                .blur(radius: 55)
+                .offset(x: 135, y: -240)
+
+            Circle()
+                .fill(Color.orange.opacity(0.18))
+                .frame(width: 220, height: 220)
+                .blur(radius: 48)
+                .offset(x: -145, y: -120)
+        }
+    }
+}
+
 #Preview {
     HomeView()
 }

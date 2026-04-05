@@ -12,25 +12,58 @@ struct SummaryView: View {
     let onDismiss: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
+        ZStack {
+            backgroundLayer
+
             ScrollView {
-                VStack(spacing: 28) {
-                    SummaryHeader(date: session.date)
+                VStack(spacing: 20) {
+                    SummaryHeader(session: session)
 
-                    SummaryMetricGrid(totalReps: session.totalReps, duration: session.formattedDuration, averageTempo: session.averageTempo, calories: session.formattedCalories)
+                    SummaryMetricGrid(session: session)
 
-                    SummaryFormQuality(formScore: session.formScore)
+                    SummaryFormQuality(session: session)
                 }
-                .padding(.horizontal)
-                .padding(.top, 40)
-                .padding(.bottom, 24)
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+                .padding(.bottom, 120)
             }
-            
-            SummaryDismissButton(onDismissTapped: onDismiss)
-                .padding(.horizontal)
-                .padding(.bottom, 16)
+            .scrollIndicators(.hidden)
         }
-        .background(Color(.systemGroupedBackground))
+        .safeAreaInset(edge: .bottom) {
+            SummaryDismissButton(onDismissTapped: onDismiss)
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
+                .padding(.bottom, 10)
+        }
+    }
+}
+
+private extension SummaryView {
+    var backgroundLayer: some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(red: 0.05, green: 0.04, blue: 0.08),
+                    Color(red: 0.10, green: 0.05, blue: 0.08),
+                    Color.black
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+
+            Circle()
+                .fill(Color.accent.opacity(0.26))
+                .frame(width: 280, height: 280)
+                .blur(radius: 60)
+                .offset(x: 130, y: -250)
+
+            Circle()
+                .fill(Color.orange.opacity(0.18))
+                .frame(width: 240, height: 240)
+                .blur(radius: 50)
+                .offset(x: -140, y: -180)
+        }
     }
 }
 

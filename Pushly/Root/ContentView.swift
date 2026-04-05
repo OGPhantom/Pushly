@@ -23,6 +23,12 @@ struct ContentView: View {
                     Label("History", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .tag(AppTab.history)
+
+            GoalsCalendarView()
+                .tabItem {
+                    Label("Goals", systemImage: "calendar.badge.checkmark")
+                }
+                .tag(AppTab.goals)
         }
         .tint(Color.primary)
     }
@@ -32,6 +38,7 @@ private extension ContentView {
     private enum AppTab: Hashable {
         case home
         case history
+        case goals
     }
 }
 

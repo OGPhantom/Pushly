@@ -21,12 +21,17 @@ struct PrimaryGradientButton<Content: View>: View {
                 .frame(height: height)
                 .background(
                     LinearGradient(
-                        colors: [.accent, .accent.opacity(0.8)],
+                        colors: [Color.accent, Color.orange],
                         startPoint: .leading,
                         endPoint: .trailing
                     ),
-                    in: .capsule
+                    in: RoundedRectangle(cornerRadius: 28, style: .continuous)
                 )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 28, style: .continuous)
+                        .stroke(.white.opacity(0.12), lineWidth: 1)
+                )
+                .shadow(color: Color.accent.opacity(0.30), radius: 22, x: 0, y: 12)
         }
     }
 }
