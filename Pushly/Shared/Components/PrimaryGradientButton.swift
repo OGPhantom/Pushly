@@ -30,3 +30,17 @@ struct PrimaryGradientButton<Content: View>: View {
         }
     }
 }
+
+#Preview {
+    PrimaryGradientButton(height: 60, width: .infinity) {
+
+    } content: {
+        HStack(spacing: 12) {
+            Image(systemName: "play.fill")
+                .font(.title3)
+            Text("Start Workout")
+                .font(.title3.bold())
+        }
+    }
+
+}

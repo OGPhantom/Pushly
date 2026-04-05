@@ -46,13 +46,13 @@ struct WorkoutView: View {
 }
 
 private extension WorkoutView {
-    private var workoutContent: some View {
+    var workoutContent: some View {
         ZStack {
             overlayUI
         }
     }
 
-    private var overlayUI: some View {
+    var overlayUI: some View {
         VStack {
             WorkoutTopBar(isPaused: viewModel.isPaused, timeText: viewModel.formattedTime, quality: viewModel.pushUpDetector.formQuality)
             Spacer()
@@ -75,14 +75,14 @@ private extension WorkoutView {
         .padding()
     }
 
-    private var countdownOrStart: some View {
+    var countdownOrStart: some View {
         WorkoutCountdownView {
             viewModel.startWorkout()
         }
     }
 
     @ViewBuilder
-    private var backgroundLayer: some View {
+    var backgroundLayer: some View {
         if viewModel.showSummary, viewModel.completedSession != nil {
             Color.black.ignoresSafeArea()
         } else {
@@ -102,7 +102,7 @@ private extension WorkoutView {
         }
     }
 
-    private var cameraLayer: some View {
+    var cameraLayer: some View {
         Group {
 #if targetEnvironment(simulator)
             CameraUnavailablePlaceholder()

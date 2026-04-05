@@ -33,3 +33,9 @@ struct SummaryView: View {
         .background(Color(.systemGroupedBackground))
     }
 }
+
+#Preview {
+    SummaryView(session: WorkoutSession(totalReps: 10, duration: 10)) {
+        //
+    }
+}

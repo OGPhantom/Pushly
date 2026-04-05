@@ -64,3 +64,8 @@ struct HistorySessionRow: View {
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
+
+
+#Preview {
+    HistorySessionRow(session: WorkoutSession(totalReps: 10, duration: 10))
+}

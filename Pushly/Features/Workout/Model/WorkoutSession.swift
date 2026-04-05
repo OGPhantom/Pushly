@@ -18,9 +18,9 @@ class WorkoutSession {
     var formScore: Double
     var calories: Double
 
-    init(totalReps: Int, duration: TimeInterval, averageTempo: Double = 0, formScore: Double = 0, calories: Double = 0) {
+    init(date: Date = Date(), totalReps: Int, duration: TimeInterval, averageTempo: Double = 0, formScore: Double = 0, calories: Double = 0) {
         self.id = UUID()
-        self.date = Date()
+        self.date = date
         self.totalReps = totalReps
         self.duration = duration
         self.averageTempo = averageTempo

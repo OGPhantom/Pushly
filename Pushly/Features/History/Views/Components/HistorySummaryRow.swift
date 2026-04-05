@@ -42,3 +42,7 @@ private extension HistorySummaryRow {
         .frame(maxWidth: .infinity)
     }
 }
+
+#Preview {
+    HistorySummaryRow(totalReps: 10, sessionsCount: 10, avgFormScore: 1.0)
+}

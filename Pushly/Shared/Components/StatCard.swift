@@ -34,3 +34,7 @@ struct StatCard: View {
         )
     }
 }
+
+#Preview {
+    StatCard(title: "This Week", value: "10", icon: "flame.fill", color: .orange)
+}

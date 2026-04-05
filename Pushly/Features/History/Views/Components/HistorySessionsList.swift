@@ -51,3 +51,7 @@ private extension HistorySessionsList {
         }
     }
 }
+
+#Preview {
+    HistorySessionsList(sessionsSectionTitle: "Week", sessions: [WorkoutSession(totalReps: 10, duration: 10)], selectedSession: .constant(WorkoutSession(totalReps: 10, duration: 10)))
+}

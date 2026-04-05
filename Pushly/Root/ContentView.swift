@@ -9,16 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedTab: AppTab = .home
-    
+
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView {
-                selectedTab = .history
-            }
-            .tabItem {
-                Label("Home", systemImage: "house.fill")
-            }
-            .tag(AppTab.home)
+            HomeView { selectedTab = .history }
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+                .tag(AppTab.home)
 
             HistoryView()
                 .tabItem {

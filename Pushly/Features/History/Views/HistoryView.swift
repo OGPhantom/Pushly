@@ -10,6 +10,7 @@ import SwiftData
 import Charts
 
 struct HistoryView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \WorkoutSession.date, order: .reverse) private var sessions: [WorkoutSession]
 
     @State private var viewModel = HistoryViewModel()
@@ -35,6 +36,15 @@ struct HistoryView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("History")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        viewModel.generateMockSessions(in: modelContext)
+                    } label: {
+                        Label("Mock Sessions", systemImage: "sparkles")
+                    }
+                }
+            }
             .sheet(item: $selectedSession) { session in
                 SummaryView(session: session) {
                     selectedSession = nil
