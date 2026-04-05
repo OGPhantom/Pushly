@@ -12,22 +12,28 @@ struct GoalsCalendarView: View {
     @AppStorage(DailyGoalStorage.key) private var dailyGoal = DailyGoalStorage.defaultReps
     @Query(sort: \WorkoutSession.date, order: .reverse) private var sessions: [WorkoutSession]
 
-    @State private var displayedMonth = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: .now)) ?? .now
-    @State private var showGoalSettings = false
-
-    private let columns = Array(repeating: GridItem(.flexible(), spacing: 8), count: 7)
+    @State private var viewModel = GoalsCalendarViewModel()
 
     var body: some View {
+        let todaySnapshot = viewModel.todaySnapshot(goal: dailyGoal, sessions: sessions)
+        let achievedDates = viewModel.achievedDates(goal: dailyGoal, sessions: sessions)
+        let monthGridItems = viewModel.monthGridItems()
+        let achievedThisMonth = viewModel.achievedThisMonth(goal: dailyGoal, sessions: sessions)
+        let currentStreak = viewModel.currentStreak(goal: dailyGoal, sessions: sessions)
+
         NavigationStack {
             ZStack {
                 backgroundLayer
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        summaryCard
+                        summaryCard(
+                            achievedThisMonth: achievedThisMonth,
+                            currentStreak: currentStreak
+                        )
                         monthHeader
                         weekdayHeader
-                        calendarGrid
+                        calendarGrid(monthGridItems: monthGridItems, achievedDates: achievedDates)
                         legend
                     }
                     .padding(.horizontal, 20)
@@ -42,14 +48,14 @@ struct GoalsCalendarView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        showGoalSettings = true
+                        viewModel.showGoalSettings = true
                     } label: {
                         Image(systemName: "slider.horizontal.3")
                             .font(.headline)
                     }
                 }
             }
-            .sheet(isPresented: $showGoalSettings) {
+            .sheet(isPresented: $viewModel.showGoalSettings) {
                 DailyGoalSettingsView(todayReps: todaySnapshot.completedReps)
             }
         }
@@ -57,28 +63,6 @@ struct GoalsCalendarView: View {
 }
 
 private extension GoalsCalendarView {
-    var calendar: Calendar { .current }
-
-    var todaySnapshot: DailyGoalSnapshot {
-        DailyGoalCalculator.snapshot(goal: dailyGoal, sessions: sessions)
-    }
-
-    var achievedDates: Set<Date> {
-        DailyGoalCalculator.achievedDates(goal: dailyGoal, from: sessions)
-    }
-
-    var monthGridItems: [Date?] {
-        DailyGoalCalculator.monthGrid(for: displayedMonth)
-    }
-
-    var achievedThisMonth: Int {
-        DailyGoalCalculator.achievedCount(in: displayedMonth, goal: dailyGoal, from: sessions)
-    }
-
-    var currentStreak: Int {
-        DailyGoalCalculator.currentGoalStreak(goal: dailyGoal, from: sessions)
-    }
-
     var backgroundLayer: some View {
         ZStack {
             LinearGradient(
@@ -100,7 +84,7 @@ private extension GoalsCalendarView {
         }
     }
 
-    var summaryCard: some View {
+    func summaryCard(achievedThisMonth: Int, currentStreak: Int) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("GOAL TRACKER")
                 .font(.caption.weight(.bold))
@@ -141,9 +125,7 @@ private extension GoalsCalendarView {
     var monthHeader: some View {
         HStack {
             Button {
-                if let previous = calendar.date(byAdding: .month, value: -1, to: displayedMonth) {
-                    displayedMonth = previous
-                }
+                viewModel.previousMonth()
             } label: {
                 Image(systemName: "chevron.left")
                     .font(.headline.weight(.bold))
@@ -155,16 +137,14 @@ private extension GoalsCalendarView {
 
             Spacer()
 
-            Text(displayedMonth.formatted(.dateTime.month(.wide).year()))
+            Text(viewModel.monthTitle)
                 .font(.title3.weight(.bold))
                 .foregroundStyle(.white)
 
             Spacer()
 
             Button {
-                if let next = calendar.date(byAdding: .month, value: 1, to: displayedMonth) {
-                    displayedMonth = next
-                }
+                viewModel.nextMonth()
             } label: {
                 Image(systemName: "chevron.right")
                     .font(.headline.weight(.bold))
@@ -177,8 +157,8 @@ private extension GoalsCalendarView {
     }
 
     var weekdayHeader: some View {
-        LazyVGrid(columns: columns, spacing: 8) {
-            ForEach(orderedWeekdaySymbols, id: \.self) { symbol in
+        LazyVGrid(columns: viewModel.gridColumns, spacing: 8) {
+            ForEach(Array(viewModel.orderedWeekdaySymbols.enumerated()), id: \.offset) { _, symbol in
                 Text(symbol)
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.white.opacity(0.48))
@@ -187,11 +167,11 @@ private extension GoalsCalendarView {
         }
     }
 
-    var calendarGrid: some View {
-        LazyVGrid(columns: columns, spacing: 10) {
+    func calendarGrid(monthGridItems: [Date?], achievedDates: Set<Date>) -> some View {
+        LazyVGrid(columns: viewModel.gridColumns, spacing: 10) {
             ForEach(Array(monthGridItems.enumerated()), id: \.offset) { _, date in
                 if let date {
-                    dayCell(for: date)
+                    dayCell(for: date, achievedDates: achievedDates)
                 } else {
                     Color.clear
                         .frame(height: 54)
@@ -209,13 +189,13 @@ private extension GoalsCalendarView {
         .padding(.top, 4)
     }
 
-    func dayCell(for date: Date) -> some View {
-        let day = calendar.startOfDay(for: date)
-        let isToday = calendar.isDateInToday(day)
+    func dayCell(for date: Date, achievedDates: Set<Date>) -> some View {
+        let day = viewModel.startOfDay(for: date)
+        let isToday = viewModel.isToday(day)
         let didHitGoal = achievedDates.contains(day)
 
         return VStack(spacing: 6) {
-            Text("\(calendar.component(.day, from: day))")
+            Text("\(viewModel.dayNumber(for: day))")
                 .font(.subheadline.weight(.bold))
                 .foregroundStyle(.white)
 
@@ -251,12 +231,6 @@ private extension GoalsCalendarView {
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
         .background(.black.opacity(0.16), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-    }
-
-    var orderedWeekdaySymbols: [String] {
-        let symbols = calendar.veryShortStandaloneWeekdaySymbols
-        let startIndex = max(calendar.firstWeekday - 1, 0)
-        return Array(symbols[startIndex...] + symbols[..<startIndex])
     }
 
     func legendItem(color: Color, title: String, border: Color? = nil) -> some View {
