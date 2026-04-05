@@ -36,7 +36,7 @@ struct GoalsCalendarView: View {
                 }
                 .scrollIndicators(.hidden)
             }
-            .navigationTitle("Goals")
+            .navigationTitle("Calendar")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
@@ -222,8 +222,8 @@ private extension GoalsCalendarView {
             Circle()
                 .fill(
                     didHitGoal
-                    ? LinearGradient(colors: [.orange, .accent], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    : LinearGradient(colors: [.white.opacity(0.16), .white.opacity(0.16)], startPoint: .top, endPoint: .bottom)
+                    ? .accent
+                    : .white.opacity(0.16)
                 )
                 .frame(width: 8, height: 8)
         }

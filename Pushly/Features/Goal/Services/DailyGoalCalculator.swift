@@ -7,29 +7,6 @@
 
 import Foundation
 
-enum DailyGoalStorage {
-    static let key = "pushly.dailyGoalReps"
-    static let defaultReps = 50
-}
-
-struct DailyGoalSnapshot {
-    let goal: Int
-    let completedReps: Int
-
-    var progress: Double {
-        guard goal > 0 else { return 0 }
-        return min(Double(completedReps) / Double(goal), 1)
-    }
-
-    var remainingReps: Int {
-        max(goal - completedReps, 0)
-    }
-
-    var isCompleted: Bool {
-        completedReps >= goal
-    }
-}
-
 enum DailyGoalCalculator {
     static func reps(on date: Date, from sessions: [WorkoutSession], calendar: Calendar = .current) -> Int {
         let start = calendar.startOfDay(for: date)

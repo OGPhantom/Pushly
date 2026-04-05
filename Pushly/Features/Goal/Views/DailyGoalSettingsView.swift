@@ -70,6 +70,10 @@ private extension DailyGoalSettingsView {
         showCustomGoal || isCustomGoalSelected
     }
 
+    func isPresetSelected(_ preset: Int) -> Bool {
+        !shouldShowCustomGoal && dailyGoal == preset
+    }
+
     var backgroundLayer: some View {
         LinearGradient(
             colors: [
@@ -152,10 +156,10 @@ private extension DailyGoalSettingsView {
                     } label: {
                         Text("\(preset)")
                             .font(.headline.weight(.bold))
-                            .foregroundStyle(dailyGoal == preset ? .black : .white)
+                            .foregroundStyle(isPresetSelected(preset) ? .black : .white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(buttonBackground(isSelected: dailyGoal == preset))
+                            .background(buttonBackground(isSelected: isPresetSelected(preset)))
                     }
                     .buttonStyle(.plain)
                 }
