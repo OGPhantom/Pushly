@@ -24,7 +24,7 @@ struct DailyGoalSettingsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                backgroundLayer
+                AppBackgroundView()
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
@@ -74,19 +74,6 @@ private extension DailyGoalSettingsView {
         !shouldShowCustomGoal && dailyGoal == preset
     }
 
-    var backgroundLayer: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.05, green: 0.05, blue: 0.10),
-                Color(red: 0.08, green: 0.04, blue: 0.09),
-                Color.black
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
-    }
-
     var previewCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
@@ -128,12 +115,7 @@ private extension DailyGoalSettingsView {
                 .padding(.top, 8)
         }
         .navigationTitle("Daily Goal")
-        .padding(22)
-        .background(.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .stroke(.white.opacity(0.08), lineWidth: 1)
-        )
+        .modifier(CardBackgroundModifier())
     }
 
     var presetsCard: some View {
@@ -253,7 +235,7 @@ private extension DailyGoalSettingsView {
 
     var notesCard: some View {
         ZStack {
-            backgroundLayer
+            AppBackgroundView()
 
             VStack(alignment: .leading, spacing: 18) {
                 Text("How it works")

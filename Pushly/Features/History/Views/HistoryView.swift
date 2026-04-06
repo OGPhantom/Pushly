@@ -110,32 +110,13 @@ private extension HistoryView {
                 .foregroundStyle(.white.opacity(0.72))
 
             HStack(spacing: 10) {
-                heroBadge(title: "All Sessions", value: "\(sessions.count)")
-                heroBadge(
+                StatPillView(title: "All Sessions", value: "\(sessions.count)")
+                StatPillView(
                     title: "Last Logged",
                     value: sessions.first?.date.formatted(.dateTime.day().month(.abbreviated)) ?? "Empty"
                 )
             }
         }
-    }
-
-    func heroBadge(title: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.caption2.weight(.medium))
-                .foregroundStyle(.white.opacity(0.52))
-
-            Text(value)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.white)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 12)
-        .background(.white.opacity(0.08), in: Capsule())
-        .overlay(
-            Capsule()
-                .stroke(.white.opacity(0.08), lineWidth: 1)
-        )
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  DailyGoalProgressCard.swift
+//  HomeGoalProgressCard.swift
 //  Pushly
 //
 //  Created by Никита Сторчай on 05.04.2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DailyGoalProgressCard: View {
+struct HomeGoalProgressCard: View {
     let snapshot: DailyGoalSnapshot
     let onOpenSettings: () -> Void
 
@@ -21,26 +21,11 @@ struct DailyGoalProgressCard: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(22)
-        .background(
-            LinearGradient(
-                colors: [
-                    Color.white.opacity(0.10),
-                    Color.white.opacity(0.04)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 30, style: .continuous)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .stroke(.white.opacity(0.08), lineWidth: 1)
-        )
+        .modifier(CardBackgroundModifier())
     }
 }
 
-private extension DailyGoalProgressCard {
+private extension HomeGoalProgressCard {
     var title: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 6) {
@@ -100,7 +85,7 @@ private extension DailyGoalProgressCard {
 }
 
 #Preview {
-    DailyGoalProgressCard(snapshot: DailyGoalSnapshot(goal: 50, completedReps: 28)) {
+    HomeGoalProgressCard(snapshot: DailyGoalSnapshot(goal: 50, completedReps: 28)) {
         //
     }
 }

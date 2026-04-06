@@ -34,7 +34,7 @@ struct HomeView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        DailyGoalProgressCard(snapshot: dailyGoalSnapshot) {
+                        HomeGoalProgressCard(snapshot: dailyGoalSnapshot) {
                             showDailyGoalSettings = true
                         }
 
