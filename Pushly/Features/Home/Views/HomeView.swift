@@ -61,17 +61,6 @@ struct HomeView: View {
             .navigationTitle("Pushly")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showDailyGoalSettings = true
-                    } label: {
-                        Image(systemName: "target")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                    }
-                }
-            }
             .fullScreenCover(isPresented: $viewModel.showWorkout) {
                 WorkoutView()
             }

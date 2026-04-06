@@ -12,16 +12,21 @@ struct HomeGoalProgressCard: View {
     let onOpenSettings: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            title
+        Button {
+            onOpenSettings()
+        } label: {
+            VStack(alignment: .leading, spacing: 18) {
+                title
 
-            HStack(spacing: 28) {
-                progressRing
-                progressDetails
+                HStack(spacing: 28) {
+                    progressRing
+                    progressDetails
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .modifier(CardBackgroundModifier())
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .modifier(CardBackgroundModifier())
+        .buttonStyle(.plain)
     }
 }
 

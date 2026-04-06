@@ -10,6 +10,11 @@ import SwiftUI
 struct HistorySessionRow: View {
     let session: WorkoutSession
 
+    private let detailColumns = [
+        GridItem(.flexible(), spacing: 10),
+        GridItem(.flexible(), spacing: 10)
+    ]
+
     private var performanceLevel: Double {
         min(max(session.formScore, 0), 1)
     }
@@ -47,10 +52,6 @@ struct HistorySessionRow: View {
                         .font(.caption.weight(.bold))
                         .tracking(2.2)
                         .foregroundStyle(.white.opacity(0.46))
-
-                    Text(formatSessionRelativeDate(session.date))
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.66))
                 }
 
                 Spacer()
@@ -60,10 +61,15 @@ struct HistorySessionRow: View {
                     .foregroundStyle(.white.opacity(0.34))
             }
 
-            HStack(spacing: 10) {
-                detailPill(icon: "timer", value: session.formattedDuration)
-                detailPill(icon: "bolt.fill", value: tempoText)
-                detailPill(icon: "flame.fill", value: "\(session.formattedCalories) kcal")
+            LazyVGrid(columns: detailColumns, spacing: 10) {
+                detailPill(
+                    icon: "clock.arrow.trianglehead.counterclockwise.rotate.90",
+                    value: relativeDateText,
+                    tint: .mint
+                )
+                detailPill(icon: "timer", value: session.formattedDuration, tint: .cyan)
+                detailPill(icon: "bolt.fill", value: tempoText, tint: .orange)
+                detailPill(icon: "flame.fill", value: "\(session.formattedCalories) kcal", tint: .red)
             }
         }
         .padding(20)
@@ -97,6 +103,10 @@ struct HistorySessionRow: View {
         return formatter.localizedString(for: date, relativeTo: Date())
     }
 
+    private var relativeDateText: String {
+        formatSessionRelativeDate(session.date)
+    }
+
     private var formColor: Color {
         switch performanceLevel {
         case 0.9...: return .green
@@ -111,21 +121,38 @@ struct HistorySessionRow: View {
         return String(format: "%.1fs pace", session.averageTempo)
     }
 
-    private func detailPill(icon: String, value: String) -> some View {
+    private func detailPill(icon: String, value: String, tint: Color) -> some View {
         HStack(spacing: 8) {
             Image(systemName: icon)
                 .font(.caption.weight(.bold))
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(tint)
 
             Text(value)
                 .font(.caption.weight(.semibold))
-                .foregroundStyle(.white.opacity(0.76))
+                .foregroundStyle(.white.opacity(0.9))
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
+
+            Spacer(minLength: 0)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .background(.black.opacity(0.16), in: Capsule())
+        .background(
+            LinearGradient(
+                colors: [
+                    tint.opacity(0.22),
+                    Color.white.opacity(0.08)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            in: Capsule()
+        )
+        .overlay(
+            Capsule()
+                .stroke(tint.opacity(0.22), lineWidth: 1)
+        )
     }
 }
 

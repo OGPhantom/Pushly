@@ -8,26 +8,40 @@
 import SwiftUI
 
 struct SummaryView: View {
+    @Environment(\.dismiss) private var dismiss
     let session: WorkoutSession
     let onDismiss: () -> Void
 
     var body: some View {
-        ZStack {
-            backgroundLayer
+        NavigationStack{
+            ZStack {
+                backgroundLayer
 
-            ScrollView {
-                VStack(spacing: 20) {
-                    SummaryHeader(session: session)
+                ScrollView {
+                    VStack(spacing: 20) {
+                        SummaryHeader(session: session)
 
-                    SummaryMetricGrid(session: session)
+                        SummaryMetricGrid(session: session)
 
-                    SummaryFormQuality(session: session)
+                        SummaryFormQuality(session: session)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
+                    .padding(.bottom, 120)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-                .padding(.bottom, 120)
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
+            .navigationTitle("Session Summary")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .fontWeight(.semibold)
+                }
+            }
         }
     }
 }

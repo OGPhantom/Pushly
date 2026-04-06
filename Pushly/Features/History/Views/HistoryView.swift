@@ -17,6 +17,7 @@ struct HistoryView: View {
 
     var body: some View {
         let filtered = viewModel.filteredSessions(from: sessions)
+        let chartData = viewModel.chartData(from: filtered)
 
         NavigationStack {
             ZStack {
@@ -28,7 +29,11 @@ struct HistoryView: View {
 
                         HistoryPeriodPicker(selectedPeriod: $viewModel.selectedPeriod)
 
-                        HistorySummaryRow(sessions: filtered, periodTitle: viewModel.sessionsSectionTitle)
+                        HistorySummaryRow(
+                            sessions: filtered,
+                            periodTitle: viewModel.sessionsSectionTitle,
+                            chartData: chartData
+                        )
 
                         HistorySessionsList(
                             sessionsSectionTitle: viewModel.sessionsSectionTitle,
