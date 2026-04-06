@@ -22,25 +22,33 @@ struct GoalsCalendarView: View {
         let currentStreak = viewModel.currentStreak(goal: dailyGoal, sessions: sessions)
 
         NavigationStack {
-            ZStack {
-                backgroundLayer
+            GeometryReader { proxy in
+                let contentWidth = max(proxy.size.width - 40, 0)
 
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        summaryCard(
-                            achievedThisMonth: achievedThisMonth,
-                            currentStreak: currentStreak
-                        )
-                        monthHeader
-                        weekdayHeader
-                        calendarGrid(monthGridItems: monthGridItems, achievedDates: achievedDates)
-                        legend
+                ZStack {
+                    backgroundLayer
+
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 20) {
+                            summaryCard(
+                                achievedThisMonth: achievedThisMonth,
+                                currentStreak: currentStreak
+                            )
+                            monthHeader
+                            weekdayHeader(contentWidth: contentWidth)
+                            calendarGrid(
+                                monthGridItems: monthGridItems,
+                                achievedDates: achievedDates,
+                                contentWidth: contentWidth
+                            )
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                        .padding(.bottom, 40)
+                        .frame(width: proxy.size.width, alignment: .topLeading)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 12)
-                    .padding(.bottom, 40)
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
             }
             .navigationTitle("Calendar")
             .navigationBarTitleDisplayMode(.inline)
@@ -95,10 +103,6 @@ private extension GoalsCalendarView {
                 .font(.system(size: 38, weight: .black, design: .rounded))
                 .foregroundStyle(.white)
 
-            Text("Days light up once your total reps for that date reach the goal.")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.68))
-
             HStack(spacing: 10) {
                 statPill(title: "This Month", value: "\(achievedThisMonth) days")
                 statPill(title: "Current Streak", value: "\(currentStreak)d")
@@ -108,16 +112,46 @@ private extension GoalsCalendarView {
         .background(
             LinearGradient(
                 colors: [
+                    Color.accent.opacity(0.24),
+                    Color.white.opacity(0.08)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(.white.opacity(0.10), lineWidth: 1)
+        )
+    }
+
+    func statPill(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.white.opacity(0.74))
+
+            Text(value)
+                .font(.title3.weight(.black))
+                .foregroundStyle(.white)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(
+            LinearGradient(
+                colors: [
                     Color.white.opacity(0.10),
                     Color.white.opacity(0.04)
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             ),
-            in: RoundedRectangle(cornerRadius: 30, style: .continuous)
+            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(.white.opacity(0.08), lineWidth: 1)
         )
     }
@@ -156,7 +190,7 @@ private extension GoalsCalendarView {
         }
     }
 
-    var weekdayHeader: some View {
+    func weekdayHeader(contentWidth: CGFloat) -> some View {
         LazyVGrid(columns: viewModel.gridColumns, spacing: 8) {
             ForEach(Array(viewModel.orderedWeekdaySymbols.enumerated()), id: \.offset) { _, symbol in
                 Text(symbol)
@@ -165,9 +199,10 @@ private extension GoalsCalendarView {
                     .frame(maxWidth: .infinity)
             }
         }
+        .frame(width: contentWidth, alignment: .leading)
     }
 
-    func calendarGrid(monthGridItems: [Date?], achievedDates: Set<Date>) -> some View {
+    func calendarGrid(monthGridItems: [Date?], achievedDates: Set<Date>, contentWidth: CGFloat) -> some View {
         LazyVGrid(columns: viewModel.gridColumns, spacing: 10) {
             ForEach(Array(monthGridItems.enumerated()), id: \.offset) { _, date in
                 if let date {
@@ -178,15 +213,7 @@ private extension GoalsCalendarView {
                 }
             }
         }
-    }
-
-    var legend: some View {
-        HStack(spacing: 14) {
-            legendItem(color: .accent, title: "Goal hit")
-            legendItem(color: .white.opacity(0.16), title: "No goal")
-            legendItem(color: .clear, title: "Today", border: .white)
-        }
-        .padding(.top, 4)
+        .frame(width: contentWidth, alignment: .leading)
     }
 
     func dayCell(for date: Date, achievedDates: Set<Date>) -> some View {
@@ -202,7 +229,7 @@ private extension GoalsCalendarView {
             Circle()
                 .fill(
                     didHitGoal
-                    ? .accent
+                    ? .orange
                     : .white.opacity(0.16)
                 )
                 .frame(width: 8, height: 8)
@@ -210,43 +237,23 @@ private extension GoalsCalendarView {
         .frame(maxWidth: .infinity, minHeight: 54)
         .background(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(didHitGoal ? .white.opacity(0.12) : .white.opacity(0.05))
+                .fill(
+                    didHitGoal
+                    ? Color.accent.opacity(0.22)
+                    : Color.white.opacity(0.04)
+                )
         )
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(isToday ? .white.opacity(0.84) : .white.opacity(0.06), lineWidth: isToday ? 1.5 : 1)
-        )
-    }
-
-    func statPill(title: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.caption2.weight(.medium))
-                .foregroundStyle(.white.opacity(0.52))
-
-            Text(value)
-                .font(.subheadline.weight(.bold))
-                .foregroundStyle(.white)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 12)
-        .background(.black.opacity(0.16), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-    }
-
-    func legendItem(color: Color, title: String, border: Color? = nil) -> some View {
-        HStack(spacing: 8) {
-            Circle()
-                .fill(color)
-                .overlay(
-                    Circle()
-                        .stroke(border ?? .clear, lineWidth: border == nil ? 0 : 1.5)
+                .stroke(
+                    isToday
+                    ? Color.white.opacity(didHitGoal ? 0.75 : 0.35)
+                    : didHitGoal
+                        ? Color.accent.opacity(0.35)
+                        : Color.white.opacity(0.06),
+                    lineWidth: isToday ? 1.5 : 1
                 )
-                .frame(width: 10, height: 10)
-
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.62))
-        }
+        )
     }
 }
 
