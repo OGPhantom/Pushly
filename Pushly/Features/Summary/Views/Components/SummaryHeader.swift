@@ -85,12 +85,13 @@ private extension SummaryHeader {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.caption2.weight(.medium))
-                .foregroundStyle(.white.opacity(0.56))
+                .foregroundStyle(.white.opacity(0.74))
 
             Text(value)
-                .font(.subheadline.weight(.bold))
+                .font(.title3.weight(.black))
                 .foregroundStyle(.white)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
         .background(.black.opacity(0.16), in: RoundedRectangle(cornerRadius: 18, style: .continuous))

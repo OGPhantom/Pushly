@@ -113,7 +113,7 @@ private extension HistoryView {
                 StatPillView(title: "All Sessions", value: "\(sessions.count)")
                 StatPillView(
                     title: "Last Logged",
-                    value: sessions.first?.date.formatted(.dateTime.day().month(.abbreviated)) ?? "Empty"
+                    value: sessions.first?.date.formatted(.dateTime.day().month(.abbreviated)) ?? "No Data"
                 )
             }
         }

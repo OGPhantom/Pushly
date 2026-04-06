@@ -29,12 +29,6 @@ struct SummaryView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .safeAreaInset(edge: .bottom) {
-            SummaryDismissButton(onDismissTapped: onDismiss)
-                .padding(.horizontal, 20)
-                .padding(.top, 10)
-                .padding(.bottom, 10)
-        }
     }
 }
 

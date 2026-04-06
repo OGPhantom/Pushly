@@ -11,23 +11,21 @@ struct HistoryPeriodPicker: View {
     @Binding var selectedPeriod: HistoryViewModel.TimePeriod
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(HistoryViewModel.TimePeriod.allCases, id: \.self) { period in
-                    Button {
-                        withAnimation(.snappy(duration: 0.24)) {
-                            selectedPeriod = period
-                        }
-                    } label: {
-                        Text(period.rawValue)
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(selectedPeriod == period ? Color.black : Color.white.opacity(0.72))
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 12)
-                            .background(background(for: period))
+        HStack(spacing: 10) {
+            ForEach(HistoryViewModel.TimePeriod.allCases, id: \.self) { period in
+                Button {
+                    withAnimation(.snappy(duration: 0.24)) {
+                        selectedPeriod = period
                     }
-                    .buttonStyle(.plain)
+                } label: {
+                    Text(period.rawValue)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(selectedPeriod == period ? Color.black : Color.white.opacity(0.72))
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 12)
+                        .background(background(for: period))
                 }
+                .buttonStyle(.plain)
             }
         }
     }
