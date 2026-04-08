@@ -48,7 +48,7 @@ class CameraManager: NSObject {
         }
 
         if let connection = videoOutput.connection(with: .video) {
-            connection.videoRotationAngle = 90
+            connection.videoRotationAngle = 0
             if position == .front {
                 connection.isVideoMirrored = true
             }

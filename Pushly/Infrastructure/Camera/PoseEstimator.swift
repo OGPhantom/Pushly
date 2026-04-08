@@ -8,6 +8,57 @@
 import Vision
 import CoreMedia
 
+nonisolated enum BodyJointName: String, CaseIterable, Hashable, Sendable {
+    case nose
+    case leftShoulder
+    case rightShoulder
+    case leftElbow
+    case rightElbow
+    case leftWrist
+    case rightWrist
+    case leftHip
+    case rightHip
+    case leftKnee
+    case rightKnee
+    case leftAnkle
+    case rightAnkle
+}
+
+nonisolated struct BodyTrackingFrame: Sendable, Equatable {
+    let points: [BodyJointName: CGPoint]
+
+    static let skeletonConnections: [(BodyJointName, BodyJointName)] = [
+        (.nose, .leftShoulder),
+        (.nose, .rightShoulder),
+        (.leftShoulder, .rightShoulder),
+        (.leftShoulder, .leftElbow),
+        (.leftElbow, .leftWrist),
+        (.rightShoulder, .rightElbow),
+        (.rightElbow, .rightWrist),
+        (.leftShoulder, .leftHip),
+        (.rightShoulder, .rightHip),
+        (.leftHip, .rightHip),
+        (.leftHip, .leftKnee),
+        (.leftKnee, .leftAnkle),
+        (.rightHip, .rightKnee),
+        (.rightKnee, .rightAnkle)
+    ]
+
+    static let highlightedJoints: Set<BodyJointName> = [
+        .leftShoulder,
+        .rightShoulder,
+        .leftElbow,
+        .rightElbow
+    ]
+
+    static let highlightedConnections: [(BodyJointName, BodyJointName)] = [
+        (.leftShoulder, .leftElbow),
+        (.leftElbow, .leftWrist),
+        (.rightShoulder, .rightElbow),
+        (.rightElbow, .rightWrist)
+    ]
+}
+
 nonisolated struct BodyJoints: Sendable, Equatable {
     var leftShoulder: CGPoint?
     var rightShoulder: CGPoint?
@@ -17,6 +68,8 @@ nonisolated struct BodyJoints: Sendable, Equatable {
     var rightWrist: CGPoint?
     var leftHip: CGPoint?
     var rightHip: CGPoint?
+    var leftKnee: CGPoint?
+    var rightKnee: CGPoint?
     var leftAnkle: CGPoint?
     var rightAnkle: CGPoint?
     var nose: CGPoint?
@@ -36,12 +89,36 @@ nonisolated struct BodyJoints: Sendable, Equatable {
 
         return hasShoulderReference && hasArmAnchor && hasFrontTrackingContext
     }
+
+    var trackingFrame: BodyTrackingFrame {
+        var points: [BodyJointName: CGPoint] = [:]
+
+        points[.nose] = nose
+        points[.leftShoulder] = leftShoulder
+        points[.rightShoulder] = rightShoulder
+        points[.leftElbow] = leftElbow
+        points[.rightElbow] = rightElbow
+        points[.leftWrist] = leftWrist
+        points[.rightWrist] = rightWrist
+        points[.leftHip] = leftHip
+        points[.rightHip] = rightHip
+        points[.leftKnee] = leftKnee
+        points[.rightKnee] = rightKnee
+        points[.leftAnkle] = leftAnkle
+        points[.rightAnkle] = rightAnkle
+
+        return BodyTrackingFrame(points: points.compactMapValues { $0 })
+    }
 }
 
 @Observable
 class PoseEstimator {
     var currentJoints: BodyJoints = BodyJoints()
     var isDetectingPose: Bool = false
+
+    var trackingFrame: BodyTrackingFrame {
+        currentJoints.trackingFrame
+    }
 
     func detectPose(in sampleBuffer: CMSampleBuffer) {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
@@ -85,6 +162,8 @@ class PoseEstimator {
         joints.rightWrist = point(for: .rightWrist)
         joints.leftHip = point(for: .leftHip)
         joints.rightHip = point(for: .rightHip)
+        joints.leftKnee = point(for: .leftKnee)
+        joints.rightKnee = point(for: .rightKnee)
         joints.leftAnkle = point(for: .leftAnkle)
         joints.rightAnkle = point(for: .rightAnkle)
         joints.nose = point(for: .nose)

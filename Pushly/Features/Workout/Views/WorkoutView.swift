@@ -13,6 +13,7 @@ import UIKit
 struct WorkoutView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("workout.showTrackingOverlay") private var showTrackingOverlay = false
     @State private var viewModel = WorkoutViewModel()
     @State private var showEmptyWorkoutAlert = false
 
@@ -66,7 +67,15 @@ private extension WorkoutView {
 
     var overlayUI: some View {
         VStack {
-            WorkoutTopBar(isPaused: viewModel.isPaused, timeText: viewModel.formattedTime, quality: viewModel.pushUpDetector.formQuality)
+            WorkoutTopBar(
+                isPaused: viewModel.isPaused,
+                timeText: viewModel.formattedTime,
+                quality: viewModel.pushUpDetector.formQuality,
+                isTrackingVisible: showTrackingOverlay,
+                onTrackingTapped: {
+                    showTrackingOverlay.toggle()
+                }
+            )
             Spacer()
             WorkoutRepCounterView(repCount: viewModel.pushUpDetector.repCount)
             Spacer()
@@ -124,7 +133,12 @@ private extension WorkoutView {
             CameraUnavailablePlaceholder()
 #else
             if AVCaptureDevice.default(for: .video) != nil {
-                CameraPreview(session: viewModel.cameraManager.captureSession)
+                CameraPreview(
+                    session: viewModel.cameraManager.captureSession,
+                    trackingFrame: viewModel.poseEstimator.trackingFrame,
+                    quality: viewModel.pushUpDetector.formQuality,
+                    showsTrackingOverlay: showTrackingOverlay && viewModel.isWorkoutActive
+                )
                     .ignoresSafeArea()
             } else {
                 CameraUnavailablePlaceholder()

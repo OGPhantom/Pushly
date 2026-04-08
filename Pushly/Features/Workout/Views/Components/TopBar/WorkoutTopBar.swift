@@ -11,6 +11,8 @@ struct WorkoutTopBar: View {
     let isPaused: Bool
     let timeText: String
     let quality: FormQuality
+    let isTrackingVisible: Bool
+    let onTrackingTapped: () -> Void
 
     var body: some View {
         HStack {
@@ -18,12 +20,21 @@ struct WorkoutTopBar: View {
 
             Spacer()
 
-            WorkoutFormIndicator(quality: quality)
+            HStack(spacing: 10) {
+                WorkoutTrackingToggle(isEnabled: isTrackingVisible, onTap: onTrackingTapped)
+                WorkoutFormIndicator(quality: quality)
+            }
         }
         .padding(.top, 8)
     }
 }
 
 #Preview {
-    WorkoutTopBar(isPaused: true, timeText: "00:10", quality: .good)
+    WorkoutTopBar(
+        isPaused: true,
+        timeText: "00:10",
+        quality: .good,
+        isTrackingVisible: true,
+        onTrackingTapped: {}
+    )
 }
