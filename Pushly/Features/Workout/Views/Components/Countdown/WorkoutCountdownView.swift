@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WorkoutCountdownView: View {
     let onComplete: () -> Void
-    @State private var count: Int = 3
+    @State private var count: Int = 8
     @State private var scale: CGFloat = 1.0
 
     var body: some View {
@@ -37,7 +37,7 @@ struct WorkoutCountdownView: View {
         }
         .sensoryFeedback(.impact(weight: .light), trigger: count)
         .task {
-            for i in stride(from: 3, through: 1, by: -1) {
+            for i in stride(from: 8, through: 1, by: -1) {
                 count = i
                 scale = 1.3
                 try? await Task.sleep(for: .milliseconds(100))

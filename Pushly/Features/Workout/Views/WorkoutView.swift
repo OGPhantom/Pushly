@@ -13,6 +13,7 @@ struct WorkoutView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = WorkoutViewModel()
+    @State private var showEmptyWorkoutAlert = false
 
     var body: some View {
         ZStack {
@@ -42,6 +43,14 @@ struct WorkoutView: View {
         .onDisappear {
             viewModel.teardownCameraPreview()
         }
+        .alert("No Push-Ups Recorded", isPresented: $showEmptyWorkoutAlert) {
+            Button("Keep Training", role: .cancel) {}
+            Button("Close Workout", role: .destructive) {
+                dismiss()
+            }
+        } message: {
+            Text("Finish Workout becomes available after at least one counted rep. If you want to leave without saving a session, close the workout instead.")
+        }
     }
 }
 
@@ -67,7 +76,11 @@ private extension WorkoutView {
                     dismiss()
                 },
                 onFinishConfirmed: {
-                    viewModel.stopWorkout(modelContext: modelContext)
+                    if viewModel.hasRecordedReps {
+                        viewModel.stopWorkout(modelContext: modelContext)
+                    } else {
+                        showEmptyWorkoutAlert = true
+                    }
                 },
                 isPaused: viewModel.isPaused
             )

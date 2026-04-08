@@ -32,6 +32,10 @@ final class WorkoutViewModel {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 
+    var hasRecordedReps: Bool {
+        pushUpDetector.repCount > 0
+    }
+
     func startWorkout() {
         prepareCameraPreview()
         pushUpDetector.reset()
@@ -69,7 +73,12 @@ final class WorkoutViewModel {
         }
     }
 
-    func stopWorkout(modelContext: ModelContext) {
+    @discardableResult
+    func stopWorkout(modelContext: ModelContext) -> Bool {
+        guard hasRecordedReps else {
+            return false
+        }
+
         timer?.invalidate()
         timer = nil
         cameraManager.stop()
@@ -86,12 +95,11 @@ final class WorkoutViewModel {
             calories: calories
         )
 
-        if pushUpDetector.repCount > 0 {
-            modelContext.insert(session)
-        }
+        modelContext.insert(session)
 
         completedSession = session
         showSummary = true
+        return true
     }
 
     func teardownCameraPreview() {
