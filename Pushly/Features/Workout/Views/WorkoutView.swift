@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import AVFoundation
+import UIKit
 
 struct WorkoutView: View {
     @Environment(\.modelContext) private var modelContext
@@ -34,6 +35,7 @@ struct WorkoutView: View {
             viewModel.processCurrentFrame()
         }
         .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
 #if !targetEnvironment(simulator)
             if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
                 viewModel.prepareCameraPreview()
@@ -41,6 +43,7 @@ struct WorkoutView: View {
 #endif
         }
         .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
             viewModel.teardownCameraPreview()
         }
         .alert("No Push-Ups Recorded", isPresented: $showEmptyWorkoutAlert) {
