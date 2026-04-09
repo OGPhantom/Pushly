@@ -24,7 +24,7 @@ struct HomeView: View {
     var body: some View {
         let todayReps = viewModel.todayReps(from: sessions)
         let weekReps = viewModel.thisWeekReps(from: sessions)
-        let streak = viewModel.streak(from: sessions)
+        let streak = DailyGoalCalculator.currentGoalStreak(goal: dailyGoal, from: sessions)
         let totalReps = viewModel.totalReps(from: sessions)
         let dailyGoalSnapshot = DailyGoalCalculator.snapshot(goal: dailyGoal, sessions: sessions)
 

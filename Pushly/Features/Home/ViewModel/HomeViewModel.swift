@@ -27,25 +27,6 @@ final class HomeViewModel {
         return sessions.filter { $0.date >= weekStart }.reduce(0) { $0 + $1.totalReps }
     }
 
-    func streak(from sessions: [WorkoutSession]) -> Int {
-        let calendar = Calendar.current
-        let sessionDays = Set(sessions.map { calendar.startOfDay(for: $0.date) })
-
-        var currentDate = calendar.startOfDay(for: Date())
-        if !sessionDays.contains(currentDate) {
-            guard let yesterday = calendar.date(byAdding: .day, value: -1, to: currentDate) else { return 0 }
-            currentDate = yesterday
-        }
-
-        var count = 0
-        while sessionDays.contains(currentDate) {
-            count += 1
-            guard let previous = calendar.date(byAdding: .day, value: -1, to: currentDate) else { break }
-            currentDate = previous
-        }
-        return count
-    }
-
     func requestCameraAccessAndStartWorkout() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
