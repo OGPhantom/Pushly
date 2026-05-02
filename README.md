@@ -30,8 +30,8 @@ The app also helps users stay consistent with a **daily goal system**, a **goal 
 
 ### 🏠 Home
 <p align="center">
-  <img width="350" height="1311" alt="IMG_1823" src="https://github.com/user-attachments/assets/c97226d2-ec3b-4fa0-aedb-63358db33f99"/>
-  <img width="350" height="1311" alt="IMG_1862" src="https://github.com/user-attachments/assets/d435fee8-1c60-4a0c-8eaa-8f838b3d2353" />
+  <img width="250" height="1311" alt="IMG_1823" src="https://github.com/user-attachments/assets/c97226d2-ec3b-4fa0-aedb-63358db33f99"/>
+  <img width="250" height="1311" alt="IMG_1862" src="https://github.com/user-attachments/assets/d435fee8-1c60-4a0c-8eaa-8f838b3d2353" />
 </p>
 
 ### 🎥 Workout & Summary
