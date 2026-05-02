@@ -36,31 +36,31 @@ The app also helps users stay consistent with a **daily goal system**, a **goal 
 
 ### 🎥 Workout & Summary
 <p align="center">
-  <img width="350" height="1311" alt="IMG_1872" src="https://github.com/user-attachments/assets/bb2e7b08-9b7e-4915-ac57-dcbeaa5d6290" />
-  <img width="350" height="1311" alt="IMG_1873" src="https://github.com/user-attachments/assets/f96838e9-cabc-48ec-a547-d738c651847e" />
-  <img width="350" height="1311" alt="IMG_1866" src="https://github.com/user-attachments/assets/9e046df2-2267-46ce-90a5-f85bac239ee7" />
-  <img width="350" height="1311" alt="IMG_1867" src="https://github.com/user-attachments/assets/c674e70f-d5dd-4039-8f44-3a258c6c99e2" />
-  <img width="350" height="1311" alt="IMG_1868" src="https://github.com/user-attachments/assets/016950f9-7d37-4b87-9a8f-f92c27e65374" />
+  <img width="603" height="1311" alt="IMG_1872" src="https://github.com/user-attachments/assets/bb2e7b08-9b7e-4915-ac57-dcbeaa5d6290" />
+  <img width="603" height="1311" alt="IMG_1873" src="https://github.com/user-attachments/assets/f96838e9-cabc-48ec-a547-d738c651847e" />
+  <img width="603" height="1311" alt="IMG_1866" src="https://github.com/user-attachments/assets/9e046df2-2267-46ce-90a5-f85bac239ee7" />
+  <img width="603" height="1311" alt="IMG_1867" src="https://github.com/user-attachments/assets/c674e70f-d5dd-4039-8f44-3a258c6c99e2" />
+  <img width="603" height="1311" alt="IMG_1868" src="https://github.com/user-attachments/assets/016950f9-7d37-4b87-9a8f-f92c27e65374" />
 </p>
 
 ### 📈 History
 <p align="center">
-  <img width="350" height="1311" alt="IMG_1824" src="https://github.com/user-attachments/assets/617ccdcf-d086-4124-978b-070f49861627" />
-  <img width="350" height="1311" alt="IMG_1863" src="https://github.com/user-attachments/assets/486ce673-058f-4a64-b138-989ab6f0197b" />
-  <img width="350" height="1311" alt="IMG_1864" src="https://github.com/user-attachments/assets/0742707f-0853-4114-bde8-7fcbe150c5d2" />
-  <img width="350" height="1311" alt="IMG_1865" src="https://github.com/user-attachments/assets/e81b4aa3-b6f1-48bc-9aef-ded02a37018c" />
+  <img width="603" height="1311" alt="IMG_1824" src="https://github.com/user-attachments/assets/617ccdcf-d086-4124-978b-070f49861627" />
+  <img width="603" height="1311" alt="IMG_1863" src="https://github.com/user-attachments/assets/486ce673-058f-4a64-b138-989ab6f0197b" />
+  <img width="603" height="1311" alt="IMG_1864" src="https://github.com/user-attachments/assets/0742707f-0853-4114-bde8-7fcbe150c5d2" />
+  <img width="603" height="1311" alt="IMG_1865" src="https://github.com/user-attachments/assets/e81b4aa3-b6f1-48bc-9aef-ded02a37018c" />
 </p>  
 
 ### 🎯 📆 Calendar
 <p align="center">
-  <img width="350" height="1311" alt="IMG_1825" src="https://github.com/user-attachments/assets/d34a833f-cef5-4df8-baaa-af58d899e6b7" />
-  <img width="350" height="1311" alt="IMG_1869" src="https://github.com/user-attachments/assets/f0740650-2cbe-41c3-b5ce-df2121ba8310" />
+  <img width="603" height="1311" alt="IMG_1825" src="https://github.com/user-attachments/assets/d34a833f-cef5-4df8-baaa-af58d899e6b7" />
+  <img width="603" height="1311" alt="IMG_1869" src="https://github.com/user-attachments/assets/f0740650-2cbe-41c3-b5ce-df2121ba8310" />
 </p>
 
 ### 🎯 Goals
 <p align="center">
-  <img width="350" height="1311" alt="IMG_1826" src="https://github.com/user-attachments/assets/b5a19bea-9b69-4782-b6c9-68c452332fc6" />
-  <img width="350" height="1311" alt="IMG_1871" src="https://github.com/user-attachments/assets/2a60eaaf-fa6b-474f-8518-bb55fcff2fb9" />
+  <img width="603" height="1311" alt="IMG_1826" src="https://github.com/user-attachments/assets/b5a19bea-9b69-4782-b6c9-68c452332fc6" />
+  <img width="603" height="1311" alt="IMG_1871" src="https://github.com/user-attachments/assets/2a60eaaf-fa6b-474f-8518-bb55fcff2fb9" />
 </p>
 
 ---
