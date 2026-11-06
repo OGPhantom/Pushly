@@ -2,6 +2,8 @@
 A **privacy-first, on-device computer-vision push-up tracker for iOS** built with **SwiftUI**, **SwiftData**, **Vision**, **AVFoundation**, and **Charts**.  
 Track your **push-up workouts in real time**, monitor **form and pace**, and review your **history, goals, and progress analytics** without sending workout data off your device.
 
+> 📱 **Coming to the App Store.** This repository holds the spring 2026 version I built for my portfolio. The app has grown a lot since then and is being finished for release on the App Store, so the current code is not published here.
+
 ---
 
 ### 📌 Short Description
